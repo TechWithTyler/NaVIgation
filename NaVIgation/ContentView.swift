@@ -12,67 +12,73 @@ import SheftAppsStylishUI
 
 struct ContentView: View {
     
-    var voice = AVSpeechSynthesizer()
+    @EnvironmentObject var gps: GPS
     
-    var initialPosition = MapCameraPosition.userLocation(followsHeading: true, fallback: .automatic)
-    
-    @AppStorage("mapStyle") var mapStyleSetting: Int = 0
-    
-    var currentMapStyleSettingTitle: String {
-        switch mapStyleSetting {
-        case 1:
-            return "Hybrid"
-        case 2:
-            return "Satelite"
-        default:
-            return "Standard"
-        }
-    }
-    
-    var mapStyle: MapStyle {
-        switch mapStyleSetting {
-        case 1:
-            return .hybrid
-        case 2:
-            return .imagery(elevation: .automatic)
-        default:
-            return .standard
-        }
-    }
+    @Namespace var mapScope
     
     var body: some View {
-        Map(initialPosition: initialPosition)
-            .onAppear {
-                speak(initialPosition.item?.name ?? "Unknown Location")
+        NavigationStack {
+            TranslucentFooterVStack {
+                Map(position: $gps.position, scope: mapScope) {
+                    UserAnnotation()
+                    ForEach(gps.locations) { location in
+                        Marker(location.name, coordinate: location.coordinate)
+                            .foregroundStyle(location.isLandmark ? .red : .gray)
+                    }
+                }
+                .mapControls {
+                    MapUserLocationButton(scope: mapScope)
+                    MapCompass(scope: mapScope)
+                }
+                .onAppear {
+                    gps.checkIfLocationServicesIsEnabled()
+                }
+            } translucentFooterContent: {
+                Text(gps.gpsText)
+                    .font(.callout)
+                    .padding()
             }
-            .onMapCameraChange(frequency: .onEnd) {
-                speak(initialPosition.item?.name ?? "Unknown Location")
+            .mapScope(mapScope)
+            .onMapCameraChange(frequency: .onEnd) { context in
+                let coordinate = context.camera.centerCoordinate
+                let heading = context.camera.heading
+                let distance = context.camera.distance
+                gps.updateWhereAmI(heading: heading, coordinate: coordinate, distance: distance)
             }
-            .mapStyle(mapStyle)
+            .mapStyle(gps.mapStyle)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     OptionsMenu {
-                        Picker(selection: $mapStyleSetting) {
+                        Button {
+                            gps.speakWhereAmI()
+                        } label: {
+                            Label("Where Am I?", systemImage: "mappin.circle.fill")
+                        }
+                        Button {
+                            gps.showingAddLandmark = true
+                        } label: {
+                            Label("Add Landmark…", systemImage: "plus")
+                        }
+                        Picker(selection: $gps.mapStyleSetting) {
                             Text("Standard").tag(0)
                             Text("Hybrid").tag(1)
                             Text("Satelite").tag(2)
                         } label: {
                             VStack {
                                 Text("Map Style")
-                                Text(currentMapStyleSettingTitle)
+                                Text(gps.currentMapStyleSettingTitle)
                                     .foregroundStyle(.secondary)
                             }
                         }
                     }
                 }
             }
+        }
+        .sheet(isPresented: $gps.showingAddLandmark) {
+            AddLandmarkView()
+        }
     }
     
-    func speak(_ message: String) {
-        let utterance = AVSpeechUtterance(string: message)
-        voice.stopSpeaking(at: .immediate)
-        voice.speak(utterance)
-    }
 }
 
 #Preview {

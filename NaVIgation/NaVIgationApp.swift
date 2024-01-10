@@ -10,9 +10,13 @@ import SwiftUI
 
 @main
 struct NaVIgationApp: App {
+    
+    @ObservedObject var gps: GPS = GPS()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(gps)
         }
     }
 }

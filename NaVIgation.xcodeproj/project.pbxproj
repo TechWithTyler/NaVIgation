@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D2E1FE32B4DF10A00427A94 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2E1FE22B4DF10A00427A94 /* Location.swift */; };
+		8D2E1FE52B4DF82200427A94 /* CoordinateEquality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2E1FE42B4DF82200427A94 /* CoordinateEquality.swift */; };
+		8D2E1FE72B4DF83200427A94 /* GPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2E1FE62B4DF83200427A94 /* GPS.swift */; };
+		8D2E1FEB2B4DFA8A00427A94 /* SheftAppsStylishUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2E1FEA2B4DFA8A00427A94 /* SheftAppsStylishUI.framework */; };
+		8D2E1FEC2B4DFA8A00427A94 /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2E1FEA2B4DFA8A00427A94 /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8D2E1FEF2B4E02CC00427A94 /* AddLandmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2E1FEE2B4E02CC00427A94 /* AddLandmarkView.swift */; };
 		8D530E662B473AFD00C5BB0E /* NaVIgationApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D530E652B473AFD00C5BB0E /* NaVIgationApp.swift */; };
 		8D530E682B473AFD00C5BB0E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D530E672B473AFD00C5BB0E /* ContentView.swift */; };
 		8D530E6A2B473AFE00C5BB0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D530E692B473AFE00C5BB0E /* Assets.xcassets */; };
@@ -33,7 +39,27 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		8D2E1FED2B4DFA8A00427A94 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8D2E1FEC2B4DFA8A00427A94 /* SheftAppsStylishUI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		8D2E1FE22B4DF10A00427A94 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		8D2E1FE42B4DF82200427A94 /* CoordinateEquality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateEquality.swift; sourceTree = "<group>"; };
+		8D2E1FE62B4DF83200427A94 /* GPS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPS.swift; sourceTree = "<group>"; };
+		8D2E1FEA2B4DFA8A00427A94 /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheftAppsStylishUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D2E1FEE2B4E02CC00427A94 /* AddLandmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLandmarkView.swift; sourceTree = "<group>"; };
+		8D2E1FF02B4E176B00427A94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D530E622B473AFD00C5BB0E /* NaVIgation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NaVIgation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D530E652B473AFD00C5BB0E /* NaVIgationApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaVIgationApp.swift; sourceTree = "<group>"; };
 		8D530E672B473AFD00C5BB0E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -51,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D2E1FEB2B4DFA8A00427A94 /* SheftAppsStylishUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +98,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8D2E1FE82B4DF8A700427A94 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8D2E1FE22B4DF10A00427A94 /* Location.swift */,
+				8D2E1FE42B4DF82200427A94 /* CoordinateEquality.swift */,
+				8D2E1FE62B4DF83200427A94 /* GPS.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8D2E1FE92B4DFA8A00427A94 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8D2E1FEA2B4DFA8A00427A94 /* SheftAppsStylishUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8D530E592B473AFD00C5BB0E = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +123,7 @@
 				8D530E752B473AFE00C5BB0E /* NaVIgationTests */,
 				8D530E7F2B473AFE00C5BB0E /* NaVIgationUITests */,
 				8D530E632B473AFD00C5BB0E /* Products */,
+				8D2E1FE92B4DFA8A00427A94 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,10 +140,13 @@
 		8D530E642B473AFD00C5BB0E /* NaVIgation */ = {
 			isa = PBXGroup;
 			children = (
+				8D2E1FF02B4E176B00427A94 /* Info.plist */,
 				8D530E652B473AFD00C5BB0E /* NaVIgationApp.swift */,
 				8D530E672B473AFD00C5BB0E /* ContentView.swift */,
 				8D530E692B473AFE00C5BB0E /* Assets.xcassets */,
 				8D530E6B2B473AFE00C5BB0E /* Preview Content */,
+				8D2E1FE82B4DF8A700427A94 /* Model */,
+				8D2E1FEE2B4E02CC00427A94 /* AddLandmarkView.swift */,
 			);
 			path = NaVIgation;
 			sourceTree = "<group>";
@@ -137,6 +186,7 @@
 				8D530E5E2B473AFD00C5BB0E /* Sources */,
 				8D530E5F2B473AFD00C5BB0E /* Frameworks */,
 				8D530E602B473AFD00C5BB0E /* Resources */,
+				8D2E1FED2B4DFA8A00427A94 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -257,8 +307,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D2E1FEF2B4E02CC00427A94 /* AddLandmarkView.swift in Sources */,
 				8D530E682B473AFD00C5BB0E /* ContentView.swift in Sources */,
+				8D2E1FE52B4DF82200427A94 /* CoordinateEquality.swift in Sources */,
+				8D2E1FE32B4DF10A00427A94 /* Location.swift in Sources */,
 				8D530E662B473AFD00C5BB0E /* NaVIgationApp.swift in Sources */,
+				8D2E1FE72B4DF83200427A94 /* GPS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +479,7 @@
 				DEVELOPMENT_TEAM = 3B6G4T54X3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NaVIgation/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 SheftApps. All rights reserved.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -459,6 +514,7 @@
 				DEVELOPMENT_TEAM = 3B6G4T54X3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NaVIgation/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 SheftApps. All rights reserved.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
