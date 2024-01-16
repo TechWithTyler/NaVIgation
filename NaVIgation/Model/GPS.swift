@@ -14,11 +14,13 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     var voice = AVSpeechSynthesizer()
     
+    var voices = AVSpeechSynthesisVoice.speechVoices()
+    
+    @AppStorage("selectedVoiceID") var selectedVoiceID = "com.apple.voice.compact.en-US.Samantha"
+    
     var locationManager: CLLocationManager?
     
     var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-    
-    let geocoder = CLGeocoder()
     
     @Published var position = MapCameraPosition.automatic
     
@@ -131,39 +133,12 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
         position = MapCameraPosition.userLocation(followsHeading: true, fallback: .automatic)
     }
     
-    func updateWhereAmI(heading: Double, coordinate: CLLocationCoordinate2D, distance: Double) {
+    func updateWhereAmI(heading: Double, coordinate: CLLocationCoordinate2D) {
         self.heading = heading
         self.coordinate = coordinate
-        if distance >= 1000 {
-            getAddressFromCoordinates(coordinate: coordinate)
-        }
-    }
-    
-    func getAddressFromCoordinates(coordinate: CLLocationCoordinate2D) {
-        let latitude = coordinate.latitude
-        let longitude = coordinate.longitude
-        let currentLocation = CLLocation(latitude: latitude, longitude: longitude)
-        gpsText = whereAmI
-        country.removeAll()
-        region.removeAll()
-        city.removeAll()
-        addressAndStreet.removeAll()
-        guard !geocoder.isGeocoding else {
-            gpsText = "Unable to convert coordinates to address right now. Try again later."
-            return }
-        geocoder.reverseGeocodeLocation(currentLocation) { [self] (places, error) in
-            if let error = error {
-                gpsText = error.localizedDescription
-            } else {
-                if let places = places, let firstPlace = places.first, let placeAddress = firstPlace.postalAddress {
-                        country = placeAddress.country
-                        region = placeAddress.state
-                        city = placeAddress.city
-                        addressAndStreet = placeAddress.street
-                        gpsText = whereAmI
-                    }
-                }
-            }
+        // Code to update the where am I information
+        print("Heading: \(heading)")
+        print("Coordinate: \(coordinate)")
     }
     
     func speakWhereAmI() {

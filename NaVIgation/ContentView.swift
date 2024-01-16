@@ -42,8 +42,7 @@ struct ContentView: View {
             .onMapCameraChange(frequency: .onEnd) { context in
                 let coordinate = context.camera.centerCoordinate
                 let heading = context.camera.heading
-                let distance = context.camera.distance
-                gps.updateWhereAmI(heading: heading, coordinate: coordinate, distance: distance)
+                gps.updateWhereAmI(heading: heading, coordinate: coordinate)
             }
             .mapStyle(gps.mapStyle)
             .toolbar {

@@ -46,7 +46,7 @@ struct AddLandmarkView: View {
                 }
         }
         .onAppear {
-            gps.getAddressFromCoordinates(coordinate: gps.coordinate)
+            
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
