@@ -15,36 +15,55 @@ struct ContentView: View {
     @EnvironmentObject var gps: GPS
     
     @Namespace var mapScope
-    
+
     var body: some View {
         NavigationStack {
             TranslucentFooterVStack {
-                Map(position: $gps.position, scope: mapScope) {
-                    UserAnnotation()
+                Map(selection: $gps.selectedResult) {
+                    Marker("Start", coordinate: gps.startingPoint)
+                    
                     ForEach(gps.locations) { location in
-                        Marker(location.name, coordinate: location.coordinate)
-                            .foregroundStyle(location.isLandmark ? .red : .gray)
+                        Marker(location.name, systemImage: "house", coordinate: location.coordinate)
+                    }
+                    
+                    // Show the route if it is available
+                    if let route = gps.route {
+                        MapPolyline(route)
+                            .stroke(.blue, lineWidth: 5)
                     }
                 }
+                .mapScope(mapScope)
+                .mapStyle(gps.mapStyle)
                 .mapControls {
-                    MapUserLocationButton(scope: mapScope)
                     MapCompass(scope: mapScope)
-                }
-                .onAppear {
-                    gps.checkIfLocationServicesIsEnabled()
+                    MapPitchSlider(scope: mapScope)
+                    MapUserLocationButton(scope: mapScope)
                 }
             } translucentFooterContent: {
-                Text(gps.gpsText)
-                    .font(.callout)
-                    .padding()
+                VStack {
+                    Text(gps.selectedResult?.description ?? "Error")
+                        .onTapGesture {
+                            gps.speak(gps.selectedResult?.description ?? "Error")
+                        }
+                    Text(gps.gpsText)
+                        .onTapGesture {
+                            gps.speak(gps.gpsText)
+                        }
+                    if let steps = gps.route?.steps {
+                        List {
+                            ForEach(steps, id: \.self) { step in
+                                Text(step.instructions)
+                                    .onTapGesture {
+                                        gps.speak(step.instructions)
+                                    }
+                            }
+                        }
+                    } else {
+                        Text("No route")
+                    }
+                }
+                .padding()
             }
-            .mapScope(mapScope)
-            .onMapCameraChange(frequency: .onEnd) { context in
-                let coordinate = context.camera.centerCoordinate
-                let heading = context.camera.heading
-                gps.updateWhereAmI(heading: heading, coordinate: coordinate)
-            }
-            .mapStyle(gps.mapStyle)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     OptionsMenu {
@@ -73,11 +92,14 @@ struct ContentView: View {
                 }
             }
         }
-        .sheet(isPresented: $gps.showingAddLandmark) {
-            AddLandmarkView()
-        }
+    .sheet(isPresented: $gps.showingAddLandmark) {
+        AddLandmarkView()
     }
-    
+        .onChange(of: gps.selectedResult) {
+            gps.getDirections()
+                }
+    }
+
 }
 
 #Preview {

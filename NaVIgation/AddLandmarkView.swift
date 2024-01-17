@@ -44,16 +44,13 @@ struct AddLandmarkView: View {
                         gps.saveCurrentPositionAsLandmark(name: name)
                     }
                 }
-        }
-        .onAppear {
-            
-        }
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel", role: .cancel) {
-                    dismiss()
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel", role: .cancel) {
+                            dismiss()
+                        }
+                    }
                 }
-            }
         }
     }
     

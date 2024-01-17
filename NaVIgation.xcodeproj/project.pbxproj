@@ -60,6 +60,7 @@
 		8D2E1FEA2B4DFA8A00427A94 /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheftAppsStylishUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D2E1FEE2B4E02CC00427A94 /* AddLandmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLandmarkView.swift; sourceTree = "<group>"; };
 		8D2E1FF02B4E176B00427A94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D3E75572B573D4F00522BB8 /* NaVIgation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NaVIgation.entitlements; sourceTree = "<group>"; };
 		8D530E622B473AFD00C5BB0E /* NaVIgation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NaVIgation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D530E652B473AFD00C5BB0E /* NaVIgationApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaVIgationApp.swift; sourceTree = "<group>"; };
 		8D530E672B473AFD00C5BB0E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -140,6 +141,7 @@
 		8D530E642B473AFD00C5BB0E /* NaVIgation */ = {
 			isa = PBXGroup;
 			children = (
+				8D3E75572B573D4F00522BB8 /* NaVIgation.entitlements */,
 				8D2E1FF02B4E176B00427A94 /* Info.plist */,
 				8D530E652B473AFD00C5BB0E /* NaVIgationApp.swift */,
 				8D530E672B473AFD00C5BB0E /* ContentView.swift */,
@@ -473,6 +475,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NaVIgation/NaVIgation.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 900;
 				DEVELOPMENT_ASSET_PATHS = "\"NaVIgation/Preview Content\"";
@@ -495,7 +498,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tylersheft.NaVIgation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -508,6 +511,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NaVIgation/NaVIgation.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 900;
 				DEVELOPMENT_ASSET_PATHS = "\"NaVIgation/Preview Content\"";
@@ -530,7 +534,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tylersheft.NaVIgation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

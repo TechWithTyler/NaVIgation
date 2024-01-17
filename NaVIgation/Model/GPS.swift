@@ -24,11 +24,15 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var position = MapCameraPosition.automatic
     
+    @Published var selectedResult: MKMapItem?
+    
+    @Published var route: MKRoute?
+    
     var country = String()
     
     var region = String()
     
-     var city = String()
+    var city = String()
     
     var addressAndStreet = String()
     
@@ -44,6 +48,24 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
     var gpsText: String = String()
     
     var heading: Double = 0
+    
+    let startingPoint = CLLocationCoordinate2D(
+        latitude: 40.83657722488077,
+        longitude: 14.306896671048852
+    )
+    
+    var travelTime: String? {
+            // Check if there is a route to get the info from
+            guard let route else { return nil }
+        
+            // Set up a date formater
+            let formatter = DateComponentsFormatter()
+            formatter.unitsStyle = .abbreviated
+            formatter.allowedUnits = [.hour, .minute]
+        
+            // Format the travel time to the format you want to display it
+            return formatter.string(from: route.expectedTravelTime)
+        }
     
     var currentMapStyleSettingTitle: String {
         switch mapStyleSetting {
@@ -88,6 +110,33 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
         } else {
             // Everything available
             return "Heading \(headingDirection). Near \(addressAndStreet), \(city), \(region), \(country)."
+        }
+    }
+    
+    func getDirections() {
+        route = nil
+        
+        // Check if there is a selected result
+        guard let selectedResult = selectedResult else { return }
+        
+        // Coordinate to use as a starting point for the example
+        let startingPoint = locationManager?.location?.coordinate ?? CLLocationCoordinate2D(
+            latitude: 40.83657722488077,
+            longitude: 14.306896671048852
+        )
+        
+        // Create and configure the request
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: startingPoint))
+        request.destination = selectedResult
+        
+        // Get the directions based on the request
+        Task {
+            let directions = MKDirections(request: request)
+            let response = try? await directions.calculate()
+            route = response?.routes.first
+            gpsText = route?.steps.first?.instructions ?? "Error"
+            speak(gpsText)
         }
     }
     
