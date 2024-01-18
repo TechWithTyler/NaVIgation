@@ -14,9 +14,20 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     var voice = AVSpeechSynthesizer()
     
-    var voices = AVSpeechSynthesisVoice.speechVoices()
+    func fetchVoices() {
+        voices = []
+        AVSpeechSynthesizer.requestPersonalVoiceAuthorization { [self] status in
+            let installedVoices = AVSpeechSynthesisVoice.speechVoices().filter({$0.language == "en-US"})
+                for voice in installedVoices {
+                    voices.append(voice)
+                }
+            voices.sort { $1.name > $0.name }
+        }
+    }
     
-    @AppStorage("selectedVoiceID") var selectedVoiceID = "com.apple.voice.compact.en-US.Samantha"
+    @Published var voices: [AVSpeechSynthesisVoice] = []
+    
+    @AppStorage("selectedVoiceID") var selectedVoiceID = "com.apple.eloquence.en-US.Reed"
     
     var locationManager: CLLocationManager?
     
@@ -45,13 +56,18 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var showingAddLandmark: Bool = false
     
+    @Published var showingSettings: Bool = false
+    
     var gpsText: String = String()
     
     var heading: Double = 0
     
-    let startingPoint = CLLocationCoordinate2D(
-        latitude: 40.83657722488077,
-        longitude: 14.306896671048852
+    let startingPoint = CLLocationCoordinate2D(latitude: 35.59686103777399, longitude: -82.54773673862036
+    )
+    
+    let endingPoint = CLLocationCoordinate2D(
+        latitude: 35.60490413968361,
+        longitude: -82.55308112914025
     )
     
     var travelTime: String? {
@@ -120,10 +136,7 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
         guard let selectedResult = selectedResult else { return }
         
         // Coordinate to use as a starting point for the example
-        let startingPoint = locationManager?.location?.coordinate ?? CLLocationCoordinate2D(
-            latitude: 40.83657722488077,
-            longitude: 14.306896671048852
-        )
+        let startingPoint = self.startingPoint
         
         // Create and configure the request
         let request = MKDirections.Request()
@@ -135,9 +148,14 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
             let directions = MKDirections(request: request)
             let response = try? await directions.calculate()
             route = response?.routes.first
-            gpsText = route?.steps.first?.instructions ?? "Error"
+            let firstStep = route?.steps.first
+            gpsText = firstStep?.instructions ?? "No first step on route"
             speak(gpsText)
         }
+    }
+    
+    func mapItem(forCoordinate coordinate: CLLocationCoordinate2D) -> MKMapItem {
+        return MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
     }
     
     func saveCurrentPositionAsLandmark(name: String) {
@@ -147,6 +165,7 @@ class GPS: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func speak(_ message: String) {
         let utterance = AVSpeechUtterance(string: message)
+        utterance.voice = AVSpeechSynthesisVoice(identifier: selectedVoiceID)
         voice.stopSpeaking(at: .immediate)
         voice.speak(utterance)
     }

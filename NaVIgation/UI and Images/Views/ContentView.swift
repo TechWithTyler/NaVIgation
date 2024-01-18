@@ -15,16 +15,14 @@ struct ContentView: View {
     @EnvironmentObject var gps: GPS
     
     @Namespace var mapScope
-
+    
     var body: some View {
         NavigationStack {
-            TranslucentFooterVStack {
+            VStack {
                 Map(selection: $gps.selectedResult) {
                     Marker("Start", coordinate: gps.startingPoint)
-                    
-                    ForEach(gps.locations) { location in
-                        Marker(location.name, systemImage: "house", coordinate: location.coordinate)
-                    }
+                    Marker("End", coordinate: gps.endingPoint)
+                        .tag(gps.mapItem(forCoordinate: gps.endingPoint))
                     
                     // Show the route if it is available
                     if let route = gps.route {
@@ -36,28 +34,30 @@ struct ContentView: View {
                 .mapStyle(gps.mapStyle)
                 .mapControls {
                     MapCompass(scope: mapScope)
-                    MapPitchSlider(scope: mapScope)
                     MapUserLocationButton(scope: mapScope)
                 }
-            } translucentFooterContent: {
+                .onChange(of: gps.selectedResult) {
+                    gps.speak(gps.selectedResult?.name ?? "No name")
+                    gps.getDirections()
+                }
                 VStack {
-                    Text(gps.selectedResult?.description ?? "Error")
-                        .onTapGesture {
-                            gps.speak(gps.selectedResult?.description ?? "Error")
-                        }
                     Text(gps.gpsText)
                         .onTapGesture {
                             gps.speak(gps.gpsText)
                         }
                     if let steps = gps.route?.steps {
-                        List {
+                        TabView {
                             ForEach(steps, id: \.self) { step in
-                                Text(step.instructions)
+                                Text(step.instructionsWithDistance)
                                     .onTapGesture {
-                                        gps.speak(step.instructions)
+                                        gps.speak(step.instructionsWithDistance)
+                                    }
+                                    .tabItem {
+                                        Text("\(step.distance)").tag(step)
                                     }
                             }
                         }
+                        .tabViewStyle(.page)
                     } else {
                         Text("No route")
                     }
@@ -77,6 +77,11 @@ struct ContentView: View {
                         } label: {
                             Label("Add Landmark…", systemImage: "plus")
                         }
+                        Button {
+                            gps.showingSettings = true
+                        } label: {
+                            Label("Settings…", systemImage: "gear")
+                        }
                         Picker(selection: $gps.mapStyleSetting) {
                             Text("Standard").tag(0)
                             Text("Hybrid").tag(1)
@@ -92,14 +97,14 @@ struct ContentView: View {
                 }
             }
         }
-    .sheet(isPresented: $gps.showingAddLandmark) {
-        AddLandmarkView()
+        .sheet(isPresented: $gps.showingAddLandmark) {
+            AddLandmarkView()
+        }
+        .sheet(isPresented: $gps.showingSettings) {
+            SettingsView()
+        }
     }
-        .onChange(of: gps.selectedResult) {
-            gps.getDirections()
-                }
-    }
-
+    
 }
 
 #Preview {
