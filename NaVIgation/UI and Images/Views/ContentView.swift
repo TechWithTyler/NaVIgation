@@ -23,7 +23,6 @@ struct ContentView: View {
                     Marker("Start", coordinate: gps.startingPoint)
                     Marker("End", coordinate: gps.endingPoint)
                         .tag(gps.mapItem(forCoordinate: gps.endingPoint))
-                    
                     // Show the route if it is available
                     if let route = gps.route {
                         MapPolyline(route)
@@ -35,6 +34,9 @@ struct ContentView: View {
                 .mapControls {
                     MapCompass(scope: mapScope)
                     MapUserLocationButton(scope: mapScope)
+                }
+                .mapFeatureSelectionDisabled { feature in
+                    return false
                 }
                 .onChange(of: gps.selectedResult) {
                     gps.speak(gps.selectedResult?.name ?? "No name")
